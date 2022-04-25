@@ -20,14 +20,14 @@ import java.util.Map;
 @Component
 public class MyWebSocket {
 
-    /*@BeforeHandshake
+    @BeforeHandshake
     public void handshake(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap){
         session.setSubprotocols("stomp");
         if (!"ok".equals(req)){
             System.out.println("Authentication failed!");
             session.close();
         }
-    }*/
+    }
 
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap){

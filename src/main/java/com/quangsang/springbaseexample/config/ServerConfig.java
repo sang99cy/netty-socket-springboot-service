@@ -1,6 +1,8 @@
 package com.quangsang.springbaseexample.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -17,6 +19,18 @@ public class ServerConfig implements WebMvcConfigurer {
     public ServerConfig(Environment env) {
         this.env = env;
     }
+
+    @Bean
+    ModelMapper modelMapper() {
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        mapper.typeMap(ActionAuditDto.class, ActionAuditEntity.class)
+//                .addMappings(mapping -> {
+//                    mapping.map(ActionAuditDto::getUserIP, ActionAuditEntity::setIp);
+//                });
+        return mapper;
+    }
+
 
     @Bean
     public ResourceBundleMessageSource messageSource() {

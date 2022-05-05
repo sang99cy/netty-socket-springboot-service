@@ -1,6 +1,6 @@
 package com.quangsang.springbaseexample.security.service;
 
-import com.quangsang.springbaseexample.mongodb.model.User;
+import com.quangsang.springbaseexample.model.User;
 import com.quangsang.springbaseexample.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

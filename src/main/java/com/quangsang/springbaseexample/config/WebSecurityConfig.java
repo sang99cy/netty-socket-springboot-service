@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -54,13 +55,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeHttpRequests().antMatchers("/api/auth/**").permitAll()
+        http
+                .cors()
+                .and().
+                csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                //TODO: CMT AUTH
+                .authorizeHttpRequests()
+                .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/actuator/**").permitAll()
-                .anyRequest().authenticated();
-        http.addFilterBefore(authenticaitonJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/api/authenticationIAM").hasAnyAuthority("USER", "CREATOR", "EDITOR", "ADMIN")
+                .antMatchers("/api/authenticationIAM1").hasAuthority("USER")
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+                /**
+                 * thêm lớp filter kiếm tra jwt
+                 */
+                http.addFilterBefore(authenticaitonJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

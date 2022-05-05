@@ -1,4 +1,4 @@
-package com.quangsang.springbaseexample.mongodb.model;
+package com.quangsang.springbaseexample.model;
 
 public enum ERole {
     ROLE_USER,

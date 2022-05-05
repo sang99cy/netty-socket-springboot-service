@@ -1,11 +1,16 @@
 package com.quangsang.springbaseexample.repository;
 
-import com.quangsang.springbaseexample.mongodb.model.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import com.quangsang.springbaseexample.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface UserRepository extends MongoRepository<User, String> {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     Optional<User> findByUsername(String username);
 
     Boolean existsByUsername(String username);

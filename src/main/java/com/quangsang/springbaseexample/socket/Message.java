@@ -2,10 +2,24 @@ package com.quangsang.springbaseexample.socket;
 
 import com.google.gson.Gson;
 import org.slf4j.Logger;
+
 import java.util.*;
 
 public class Message implements JsonSerializable {
 
+    /*Các mode tuỳ chọn hiển thị server hay là service*/
+    public enum MODE {
+        SERVER_MODE,
+        SERVICE_MODE
+    }
+
+    /*Hình thức hiển thị message*/
+    public enum TYPE {
+        MERGE,
+        SPLIT
+    }
+
+    /*message hiển thị CPU hay là DISK*/
     public enum OP {
         READ_FILE,
         CLOSE,

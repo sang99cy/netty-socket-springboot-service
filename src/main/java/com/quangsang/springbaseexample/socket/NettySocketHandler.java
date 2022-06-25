@@ -9,6 +9,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class NettySocketHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        super.handlerAdded(ctx);
+        channelGroup.add(ctx.channel());
     }
 
     /**
@@ -64,8 +65,17 @@ public class NettySocketHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-        //System.out.println(msg.text());
+        System.out.println(msg.text());
         Message receivedMessage = deserializeMessage(msg.text());
+        String op = receivedMessage.op.name();
+        switch (op) {
+            case "PING":
+                System.out.println(receivedMessage);
+                ctx.writeAndFlush(Message.fromJson("{\"op\":\"ERROR\",\"data\":{\"message\":\"connect to server zeppelin fail\"}}"));
+                break;
+            default:
+                System.out.println("default!");
+        }
     }
 
 

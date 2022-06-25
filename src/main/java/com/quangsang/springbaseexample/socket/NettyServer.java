@@ -11,6 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.ssl.util.SelfSignedCertificate;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -18,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.security.cert.CertificateException;
 
 @Component
 @Slf4j
@@ -57,7 +60,7 @@ public class NettyServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() { //  Trigger actions when binding client connections
 
                         @Override
-                        protected void initChannel(SocketChannel ch) {
+                        protected void initChannel(SocketChannel ch) throws CertificateException {
                             logger.info("Receive new client connection: {}", ch.toString());
                             //The WebSocket protocol itself is based on the HTTP protocol, so this side should also use the HTTP interpolation.
                             ch.pipeline().addLast(new HttpServerCodec());
